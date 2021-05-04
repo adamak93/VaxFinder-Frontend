@@ -1,29 +1,29 @@
 import React, { useState } from "react";
 import {
   Card,
-  Stack,
-  Icon,
   Link,
   Banner,
   TextContainer,
+  Stack,
+  Layout,
 } from "@shopify/polaris";
 import { MobileAcceptMajor, CircleDisabledMajor } from "@shopify/polaris-icons";
 
 interface PharmacyProps {
-  pharmacy: {
-    id: string;
-    pharmacyName: string;
-    booking: boolean;
-    address: string;
-    phone: string;
-    website: string;
-    lastUpdated: string;
-  };
+  // Id used for creating React keys
+  // eslint-disable-next-line react/no-unused-prop-types
+  id: string;
+  pharmacyName: string;
+  booking: boolean;
+  address: string;
+  phone: string;
+  website: string;
+  lastUpdated: string;
 }
 
-export function PharmacyContainer({ pharmacy }: PharmacyProps) {
-  const [booking, setBooking] = useState(pharmacy.booking);
-  const [lastUpdated, setlastUpdated] = useState(pharmacy.lastUpdated);
+export function PharmacyCard(props: PharmacyProps) {
+  const [booking, setBooking] = useState(props.booking);
+  const [lastUpdated, setlastUpdated] = useState(props.lastUpdated);
 
   const updatePharmacy = (availability: boolean) => {
     const time = new Date();
@@ -50,9 +50,9 @@ export function PharmacyContainer({ pharmacy }: PharmacyProps) {
     );
   };
   return (
-    <section>
+    <Layout.Section>
       <Card
-        title={pharmacy.pharmacyName}
+        title={props.pharmacyName}
         sectioned
         primaryFooterAction={{
           content: "Report Availability",
@@ -74,17 +74,21 @@ export function PharmacyContainer({ pharmacy }: PharmacyProps) {
         <TextContainer>
           <Card.Section fullWidth>{availabilityMarkup()}</Card.Section>
           <Card.Section title="Store Info">
-            <Card.Subsection>{pharmacy.address}</Card.Subsection>
+            <Card.Subsection>{props.address}</Card.Subsection>
             <Card.Subsection>
-              {pharmacy.phone}
-              <br />
-              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <Link url={pharmacy.website}>{pharmacy.website}</Link>
+              <Stack>
+                <Stack.Item>{props.phone}</Stack.Item>
+              </Stack>
+              <Stack>
+                <Stack.Item>
+                  {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                  <Link url={props.website}>{props.website}</Link>
+                </Stack.Item>
+              </Stack>
             </Card.Subsection>
           </Card.Section>
         </TextContainer>
       </Card>
-      <br />
-    </section>
+    </Layout.Section>
   );
 }
